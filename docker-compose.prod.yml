@@ -1,0 +1,23 @@
+# vim: set syntax=yaml:
+
+version: "2"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfiles/app/Dockerfile.production
+    command: [uwsgi, --ini, uwsgi.ini]
+
+  nginx:
+    build:
+      context: .
+      dockerfile: dockerfiles/nginx/Dockerfile
+    ports:
+      - "80:80"
+    links:
+      - app
+
+networks:
+  default:
+    driver: bridge
