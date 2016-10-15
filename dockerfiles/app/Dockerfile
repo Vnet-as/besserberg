@@ -14,7 +14,7 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-COPY besserberg/misc/requirements.txt /tmp/requirements.txt
+COPY ./requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
 COPY dockerfiles/app/wkhtmltopdf.sh /usr/bin/wkhtmltopdf.sh
