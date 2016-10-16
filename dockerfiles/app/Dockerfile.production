@@ -13,11 +13,10 @@ RUN apt-get update \
     ghostscript \
  && rm -rf /var/lib/apt/lists/*
 
-COPY besserberg/misc/requirements.txt /tmp/requirements.txt
-COPY besserberg/misc/production-requirements.txt /tmp/production-requirements.txt
+COPY ./requirements.txt /tmp/requirements.txt
 
 RUN pip install -r /tmp/requirements.txt
-RUN pip install -r /tmp/production-requirements.txt
+RUN pip install uwsgi
 
 COPY dockerfiles/app/wkhtmltopdf.sh /usr/bin/wkhtmltopdf.sh
 
