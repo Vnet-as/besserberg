@@ -55,8 +55,7 @@ def render_pdf_from_html():
     pdf_file = backends_registry.get('pdfkit').render(template)
 
     if code is not None:
-        pdf_file = postprocess_pdf(
-            pdf_file, code)
+        pdf_file = postprocess_pdf(pdf_file, code)
 
     response.headers['Content-Type'] = 'application/pdf; charset=UTF-8'
 
