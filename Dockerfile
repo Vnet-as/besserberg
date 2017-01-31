@@ -26,4 +26,4 @@ COPY ./besserberg /opt/besserberg
 
 WORKDIR /opt/besserberg
 
-CMD ["python", "app.py"]
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
