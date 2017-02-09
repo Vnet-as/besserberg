@@ -24,6 +24,9 @@ RUN ln -s /usr/bin/wkhtmltopdf.sh /usr/local/bin/wkhtmltopdf
 
 COPY ./besserberg /opt/besserberg
 
+RUN useradd -s /bin/bash besserberg
+USER besserberg
+
 WORKDIR /opt/besserberg
 
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
