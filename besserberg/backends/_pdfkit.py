@@ -16,5 +16,5 @@ class PdfKitBackend(BesserbergBackend):
         'encoding': "UTF-8",
     }
 
-    def render(self, in_html, options=None):
-        return pdfkit.from_string(in_html, False, options=self.OPTIONS)
+    def render(self, template, options=None):
+        return pdfkit.from_string(template, False, options=self.OPTIONS)

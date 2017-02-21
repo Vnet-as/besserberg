@@ -4,3 +4,4 @@ pypdf2==1.26.0
 pyqrcode==1.2.1
 wand==0.4.4
 uwsgi==2.0.14
+trml2pdf==0.4.2

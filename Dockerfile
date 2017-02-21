@@ -29,4 +29,6 @@ USER besserberg
 
 WORKDIR /opt/besserberg
 
+ENV PYTHONPATH /opt:$PYTHONPATH
+
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
