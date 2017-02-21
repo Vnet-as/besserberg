@@ -11,7 +11,7 @@ for module in BACKEND_MODULES:
     try:
         importlib.import_module(module)
     except ModuleNotFoundError:
-        print(mod)
+        pass
     else:
         importlib.import_module('besserberg.backends._{0}'.format(module))
 
