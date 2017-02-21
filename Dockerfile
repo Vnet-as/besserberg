@@ -29,6 +29,6 @@ USER besserberg
 
 WORKDIR /opt/besserberg
 
-RUN export PYTHONPATH=/opt:$PYTHONPATH
+ENV PYTHONPATH /opt:$PYTHONPATH
 
 CMD ["uwsgi", "--ini", "uwsgi.ini"]
