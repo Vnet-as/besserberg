@@ -13,7 +13,7 @@ Running
 ::
 
     $ docker pull vnet/besserberg
-    $ docker run --rm -p 8080:8080 -it besserberg python app.py
+    $ docker run --rm -p 8080:8080 -t vnet/besserberg python app.py
 
 Usage example
 ~~~~~~~~~~~~~
