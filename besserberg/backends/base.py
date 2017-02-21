@@ -32,5 +32,5 @@ class BesserbergBackend(metaclass=BesserbergBackendMeta):
     def get_code(cls):
         return cls.BACKEND_CODE
 
-    def render(self, in_html, options=None):
+    def render(self, template, options=None):
         raise NotImplementedError('Subclass must implement this method.')
