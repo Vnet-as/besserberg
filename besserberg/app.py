@@ -8,18 +8,8 @@ from wand.image import Image
 
 import pyqrcode
 import bottle
-import pdfkit
 
-
-# pdfkit settings 'https://pypi.python.org/pypi/pdfkit'
-PDFKIT_OPTIONS = {
-    'page-size': 'A4',
-    'margin-top': '1cm',
-    'margin-right': '1cm',
-    'margin-bottom': '1cm',
-    'margin-left': '1cm',
-    'encoding': "UTF-8",
-}
+from besserberg.backends import backends_registry
 
 
 def postprocess_pdf(input_pdf, qr_data):
@@ -59,17 +49,14 @@ def postprocess_pdf(input_pdf, qr_data):
 @post('/')
 def render_pdf_from_html():
 
-    template = request.body.read().decode("utf-8")
-    code = request.query.get('qrcode', None)
+    template = request.params.get('data', '')
+    backend = request.params.get('backend', 'pdfkit')
+    code = request.params.get('qr', None)
 
-    pdf_file = pdfkit.from_string(
-        template,
-        False,
-        options=PDFKIT_OPTIONS,)
+    pdf_file = backends_registry.get(backend).render(template)
 
     if code is not None:
-        pdf_file = postprocess_pdf(
-            pdf_file, code)
+        pdf_file = postprocess_pdf(pdf_file, code)
 
     response.headers['Content-Type'] = 'application/pdf; charset=UTF-8'
 
