@@ -11,6 +11,7 @@ RUN apt-get update \
     wkhtmltopdf \
     xvfb \
     ghostscript \
+    ttf-dejavu \
  && rm -rf /var/lib/apt/lists/*
 
 COPY ./requirements.txt /tmp/requirements.txt

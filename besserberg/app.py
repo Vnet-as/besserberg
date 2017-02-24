@@ -49,9 +49,9 @@ def postprocess_pdf(input_pdf, qr_data):
 @post('/')
 def render_pdf_from_html():
 
-    template = request.forms.get('data', '')
-    backend = request.forms.get('backend', 'pdfkit')
-    code = request.forms.get('qr', None)
+    template = request.forms.data or ''
+    backend = request.forms.backend or 'pdfkit'
+    code = request.forms.qr or None
 
     pdf_file = backends_registry.get(backend).render(template)
 
