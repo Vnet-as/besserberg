@@ -20,7 +20,7 @@ Usage example
 
 ::
 
-    curl -XPOST 'http://localhost:8080' --data 'body="<h1>Hello besserberg!</h1>"&backend=pdfkit&qr=secret' > hello.pdf
+    curl -XPOST 'http://localhost:8080' --data 'data="<h1>Hello besserberg!</h1>"&backend=pdfkit&qr=secret' > hello.pdf
 
 Deployment
 ~~~~~~~~~~
