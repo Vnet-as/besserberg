@@ -1,4 +1,8 @@
+#!/usr/bin/env python
+
+# 3p
 import pdfkit
+# project
 from besserberg.backends.base import BesserbergBackend
 
 
@@ -13,7 +17,7 @@ class PdfKitBackend(BesserbergBackend):
         'margin-right': '1cm',
         'margin-bottom': '1cm',
         'margin-left': '1cm',
-        'encoding': "UTF-8",
+        'encoding': 'UTF-8',
     }
 
     def render(self, template, options=None):
