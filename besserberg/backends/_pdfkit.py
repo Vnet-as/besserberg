@@ -13,10 +13,6 @@ class PdfKitBackend(BesserbergBackend):
     # pdfkit settings 'https://pypi.python.org/pypi/pdfkit'
     OPTIONS = {
         'page-size': 'A4',
-        'margin-top': '1cm',
-        'margin-right': '1cm',
-        'margin-bottom': '1cm',
-        'margin-left': '1cm',
         'encoding': 'UTF-8',
     }
 
