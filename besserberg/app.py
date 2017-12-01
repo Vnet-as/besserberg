@@ -59,6 +59,8 @@ def render_pdf_from_html():
     backend = bottle.request.forms.backend or 'pdfkit'
     code = bottle.request.forms.qr or None
 
+    print(template)
+
     try:
         qr_x = int(bottle.request.forms.qr_x or 545)
         qr_y = int(bottle.request.forms.qr_y or 20)
@@ -80,7 +82,6 @@ def render_pdf_from_html():
         pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y)
 
     bottle.response.headers['Content-Type'] = 'application/pdf; charset=UTF-8'
-
 
     return pdf_file
 
