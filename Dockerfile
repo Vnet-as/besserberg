@@ -32,4 +32,4 @@ WORKDIR /opt/besserberg
 
 ENV PYTHONPATH /opt:$PYTHONPATH
 
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "besserberg.app:app"]
