@@ -16,5 +16,16 @@ class PdfKitBackend(BesserbergBackend):
         'encoding': 'UTF-8',
     }
 
+    # filter for options passed to render method
+    _allowed_options = [
+        'footer-left', 'footer-right', 'footer-center',
+        'header-left', 'header-right', 'header-center',
+    ]
+
     def render(self, template, options=None):
-        return pdfkit.from_string(template, False, options=self.OPTIONS)
+        if options:
+            options = {
+                k: options[k]
+                for k in self._allowed_options if k in options
+            }
+        return pdfkit.from_string(template, False, options=options)

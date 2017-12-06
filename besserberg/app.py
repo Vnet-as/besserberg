@@ -60,6 +60,7 @@ def render_pdf_from_html():
     )
     backend = bottle.request.forms.backend or 'pdfkit'
     code = bottle.request.forms.qr or None
+    options = bottle.request.forms.decode()
 
     try:
         qr_x = int(bottle.request.forms.qr_x or 545)
@@ -71,7 +72,7 @@ def render_pdf_from_html():
         )
 
     try:
-        pdf_file = backends_registry.get(backend).render(template)
+        pdf_file = backends_registry.get(backend).render(template, options)
     except AttributeError:
         return bottle.HTTPResponse(
             status=400,
