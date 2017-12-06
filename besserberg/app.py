@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-# std
 from io import StringIO, BytesIO
 import argparse
 # 3p
@@ -11,6 +10,9 @@ import pyqrcode
 # project
 from besserberg.backends import backends_registry
 
+
+# update bottle's max payload size due to large templates
+bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024
 
 app = application = bottle.default_app()
 
