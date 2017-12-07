@@ -2,6 +2,7 @@
 
 from io import StringIO, BytesIO
 import argparse
+import logging
 # 3p
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from wand.image import Image
@@ -13,7 +14,9 @@ from besserberg.backends import backends_registry
 
 # update bottle's max payload size due to large templates
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024
-
+# create logger
+logger = logging.getLogger(__name__)
+# initialize bottle application
 app = application = bottle.default_app()
 
 
@@ -80,7 +83,14 @@ def render_pdf_from_html():
         )
 
     if code is not None:
-        pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y)
+        try:
+            pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y)
+        except ValueError:
+            logger.error('Failed to append QR code', exc_info=True)
+            return bottle.HTTPResponse(
+                status=422,
+                body='Unable to append QR code to rendered template.',
+            )
 
     bottle.response.headers['Content-Type'] = 'application/pdf; charset=UTF-8'
 
