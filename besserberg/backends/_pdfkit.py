@@ -14,6 +14,7 @@ class PdfKitBackend(BesserbergBackend):
     OPTIONS = {
         'page-size': 'A4',
         'encoding': 'UTF-8',
+        'no-outline': None,
     }
 
     # filter for options passed to render method
@@ -23,9 +24,11 @@ class PdfKitBackend(BesserbergBackend):
     ]
 
     def render(self, template, options=None):
-        if options:
-            options = {
-                k: options[k]
-                for k in self._allowed_options if k in options
-            }
+        options = {
+            k: options[k]
+            for k in self._allowed_options if k in options
+        } if isinstance(options, dict) else {}
+
+        options.update(self.OPTIONS)
+
         return pdfkit.from_string(template, False, options=options)
