@@ -1,4 +1,8 @@
+#!/usr/bin/env python
+
+# 3p
 import pdfkit
+# project
 from besserberg.backends.base import BesserbergBackend
 
 
@@ -9,12 +13,22 @@ class PdfKitBackend(BesserbergBackend):
     # pdfkit settings 'https://pypi.python.org/pypi/pdfkit'
     OPTIONS = {
         'page-size': 'A4',
-        'margin-top': '1cm',
-        'margin-right': '1cm',
-        'margin-bottom': '1cm',
-        'margin-left': '1cm',
-        'encoding': "UTF-8",
+        'encoding': 'UTF-8',
+        'no-outline': None,
     }
 
+    # filter for options passed to render method
+    _allowed_options = [
+        'footer-left', 'footer-right', 'footer-center',
+        'header-left', 'header-right', 'header-center',
+    ]
+
     def render(self, template, options=None):
-        return pdfkit.from_string(template, False, options=self.OPTIONS)
+        options = {
+            k: options[k]
+            for k in self._allowed_options if k in options
+        } if isinstance(options, dict) else {}
+
+        options.update(self.OPTIONS)
+
+        return pdfkit.from_string(template, False, options=options)

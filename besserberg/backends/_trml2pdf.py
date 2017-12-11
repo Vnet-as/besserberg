@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 
-from besserberg.backends.base import BesserbergBackend
-
+# 3p
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-
 import trml2pdf
+# project
+from besserberg.backends.base import BesserbergBackend
 
 
 class Trml2PdfBackend(BesserbergBackend):

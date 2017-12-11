@@ -8,11 +8,12 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
  && apt-get install -y \
-    wkhtmltopdf \
     xvfb \
     ghostscript \
     ttf-dejavu \
  && rm -rf /var/lib/apt/lists/*
+
+ADD /vendor/wkhtmltopdf.tar.xz /usr/bin
 
 COPY ./requirements.txt /tmp/requirements.txt
 
@@ -32,4 +33,4 @@ WORKDIR /opt/besserberg
 
 ENV PYTHONPATH /opt:$PYTHONPATH
 
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "besserberg.app:app"]
