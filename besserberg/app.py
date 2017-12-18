@@ -68,6 +68,7 @@ def render_pdf_from_html():
     try:
         qr_x = int(bottle.request.forms.qr_x or 545)
         qr_y = int(bottle.request.forms.qr_y or 20)
+        version = int(bottle.request.forms.version or None)
     except ValueError:
         return bottle.HTTPResponse(
             status=400,
@@ -84,7 +85,7 @@ def render_pdf_from_html():
 
     if code is not None:
         try:
-            pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y)
+            pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y, version)
         except ValueError:
             logger.error('Failed to append QR code', exc_info=True)
             return bottle.HTTPResponse(
