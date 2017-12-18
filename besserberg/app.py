@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 app = application = bottle.default_app()
 
 
-def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20):
+def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None):
     """ PDF post-processor. Append QR code on each PDF page.
 
     :param input_pdf: PDF byte content
@@ -29,7 +29,7 @@ def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20):
     :param qr_y: Y possition of QR image
     """
 
-    qr = pyqrcode.create(qr_data)
+    qr = pyqrcode.create(qr_data, version=version)
 
     eps = StringIO()
     qr.eps(eps)
