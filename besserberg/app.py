@@ -68,7 +68,9 @@ def render_pdf_from_html():
     try:
         qr_x = int(bottle.request.forms.qr_x or 545)
         qr_y = int(bottle.request.forms.qr_y or 20)
-        version = (int(bottle.request.forms.version) if bottle.request.forms.version else None)
+        version = None
+        if bottle.request.forms.version:
+            version = int(bottle.request.forms.version)
     except ValueError:
         return bottle.HTTPResponse(
             status=400,
