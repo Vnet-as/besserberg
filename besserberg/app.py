@@ -3,8 +3,11 @@
 from io import StringIO, BytesIO
 import argparse
 import logging
+import os
 # 3p
 from PyPDF2 import PdfFileReader, PdfFileWriter
+from raven import Client
+from raven.contrib.bottle import Sentry
 from wand.image import Image
 import bottle
 import pyqrcode
@@ -18,6 +21,10 @@ bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024
 logger = logging.getLogger(__name__)
 # initialize bottle application
 app = application = bottle.default_app()
+app.catchall = False
+# initialize sentry and use one as wrapper for bottle application
+sentry_client = Client(os.environ.get('SENTRY_DSN'), auto_log_stacks=True)
+app = Sentry(app, sentry_client)
 
 
 def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None):
@@ -104,10 +111,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', dest='port', default=8080, type=int)
     parser.add_argument('--host', dest='host', default='0.0.0.0')
-
+    parser.add_argument('--sentry-dsn', dest='sentry_dsn', default=None)
     args = parser.parse_args()
 
-    app.run(host=args.host, port=args.port)
+    if args.sentry_dsn is not None:
+        sentry_client.set_dsn(args.sentry_dsn)
+
+    bottle.run(app=app, host=args.host, port=args.port)
 
 
 if __name__ == '__main__':
