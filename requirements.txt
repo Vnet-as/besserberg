@@ -5,3 +5,4 @@ pyqrcode==1.2.1
 wand==0.4.4
 trml2pdf==0.4.2
 gunicorn==19.7.1
+raven==6.4.0
