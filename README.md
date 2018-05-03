@@ -1,5 +1,6 @@
 # Besserberg
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/73c4a345b51801c20a72/maintainability)](https://codeclimate.com/github/Vnet-as/besserberg/maintainability)
 [![Docker pulls](https://img.shields.io/docker/pulls/vnet/besserberg.svg)](https://hub.docker.com/r/vnet/besserberg/)
 [![Docker automated build](https://img.shields.io/docker/automated/vnet/besserberg.svg)](https://hub.docker.com/r/vnet/besserberg/)
 
