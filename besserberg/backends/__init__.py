@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
+# std
 import importlib
+import logging
+
+# project
+from besserberg.backends.base import BesserbergBackend
 
 
 BACKEND_MODULES = ('pdfkit', 'trml2pdf')
@@ -10,9 +15,9 @@ for module in BACKEND_MODULES:
     try:
         importlib.import_module(module)
     except ModuleNotFoundError:
-        pass
+        logging.warning(f'module "{module}" not found')
     else:
-        importlib.import_module('besserberg.backends._{0}'.format(module))
+        importlib.import_module(f'besserberg.backends._{module}')
 
 
-from besserberg.backends.base import backends_registry  # NOQA
+backends_registry = BesserbergBackend.BACKEND_REGISTRY

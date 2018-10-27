@@ -4,7 +4,8 @@ FROM python:3.7
 
 LABEL maintainer "VNET a.s. <db@vnet.sk>"
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update \
  && apt-get install -y \

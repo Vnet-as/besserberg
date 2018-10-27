@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
+# std
 from io import StringIO, BytesIO
 import argparse
 import logging
 import os
+
 # 3p
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from raven import Client
@@ -11,6 +13,7 @@ from raven.contrib.bottle import Sentry
 from wand.image import Image
 import bottle
 import pyqrcode
+
 # project
 from besserberg.backends import backends_registry
 
