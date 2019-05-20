@@ -41,15 +41,16 @@ def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None):
 
     qr = pyqrcode.create(qr_data, version=version)
 
-    eps = StringIO()
-    qr.eps(eps)
-    eps.seek(0)
+    png = BytesIO()
+    qr.png(png)
+    png.seek(0)
 
     qr_pdf = BytesIO()
 
-    qr_img = Image(file=BytesIO(bytes(eps.read(), 'utf-8')))
+    qr_img = Image(file=png)
     qr_img.format = 'pdf'
     qr_img.save(qr_pdf)
+    qr_pdf.seek(0)
 
     qr_page = PdfFileReader(qr_pdf).getPage(0)
 
