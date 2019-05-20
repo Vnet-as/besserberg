@@ -12,6 +12,7 @@ RUN apt-get update \
     xvfb \
     ghostscript \
     ttf-dejavu \
+    libssl1.0-dev \
  && rm -rf /var/lib/apt/lists/*
 
 COPY ./requirements.txt /tmp/requirements.txt
