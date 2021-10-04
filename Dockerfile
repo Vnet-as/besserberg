@@ -10,17 +10,14 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update \
  && apt-get install -y \
     xvfb \
+    wkhtmltopdf \
     ghostscript \
-    ttf-dejavu \
-    libssl1.0-dev \
+    fonts-dejavu \
+    libssl-dev \
  && rm -rf /var/lib/apt/lists/*
 
 COPY ./requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
-
-ADD /vendor/wkhtmltopdf.tar.xz /usr/bin
-COPY ./wkhtmltopdf.sh /usr/bin/wkhtmltopdf.sh
-RUN chmod a+x /usr/bin/wkhtmltopdf.sh
 
 COPY ./besserberg /opt/besserberg
 WORKDIR /opt/besserberg
