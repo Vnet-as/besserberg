@@ -30,19 +30,21 @@ sentry_client = Client(os.environ.get('SENTRY_DSN'), auto_log_stacks=True)
 app = Sentry(app, sentry_client)
 
 
-def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None):
+def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1):
     """ PDF post-processor. Append QR code on each PDF page.
 
     :param input_pdf: PDF byte content
     :param qr_data: QR code data
     :param qr_x: X possition of QR image
     :param qr_y: Y possition of QR image
+    :param version: set QR code density
+    :param scale: set size of final image
     """
 
     qr = pyqrcode.create(qr_data, version=version)
 
     png = BytesIO()
-    qr.png(png)
+    qr.png(png, scale=scale)
     png.seek(0)
 
     qr_pdf = BytesIO()
