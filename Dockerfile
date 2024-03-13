@@ -20,6 +20,7 @@ COPY ./requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
 
 COPY ./besserberg /opt/besserberg
+COPY policy.xml /etc/ImageMagick-6/policy.xml
 WORKDIR /opt/besserberg
 
 ENV PYTHONPATH /opt:$PYTHONPATH
