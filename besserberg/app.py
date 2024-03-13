@@ -30,7 +30,7 @@ sentry_client = Client(os.environ.get('SENTRY_DSN'), auto_log_stacks=True)
 app = Sentry(app, sentry_client)
 
 
-def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1):
+def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1, quiet_zone=4):
     """ PDF post-processor. Append QR code on each PDF page.
 
     :param input_pdf: PDF byte content
@@ -39,14 +39,15 @@ def postprocess_pdf(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1
     :param qr_y: Y possition of QR image
     :param version: set QR code density
     :param scale: set size of final image
+    :param quiet_zone: set QR code corner
     """
 
     qr = pyqrcode.create(qr_data, version=version)
 
     png = BytesIO()
-    qr.png(png, scale=scale)
+    qr.png(png, scale=scale, quiet_zone=quiet_zone)
     png.seek(0)
-
+    
     qr_pdf = BytesIO()
 
     qr_img = Image(file=png)
@@ -84,6 +85,12 @@ def render_pdf_from_html():
         version = None
         if bottle.request.forms.version:
             version = int(bottle.request.forms.version)
+        scale = 1
+        if bottle.request.forms.scale:
+            scale = int(bottle.request.forms.scale)
+        quiet_zone = 4
+        if bottle.request.forms.quiet_zone:
+            quiet_zone = int(bottle.request.forms.quiet_zone)
     except ValueError:
         return bottle.HTTPResponse(
             status=400,
@@ -100,7 +107,7 @@ def render_pdf_from_html():
 
     if code is not None:
         try:
-            pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y, version)
+            pdf_file = postprocess_pdf(pdf_file, code, qr_x, qr_y, version, scale, quiet_zone)
         except ValueError:
             logger.error('Failed to append QR code', exc_info=True)
             return bottle.HTTPResponse(
