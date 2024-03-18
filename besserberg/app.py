@@ -48,7 +48,7 @@ def generate_datamatrix(input_pdf, dm_data, dm_x=545, dm_y=20, scale=1, rectangu
     return postprocess_pdf(input_pdf, svg, dm_x, dm_y, scale)
 
 
-def generate_qrcode(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1, quiet_zone=4):
+def generate_qrcode(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1, quiet_zone=4, error='H'):
     """
     Generate Qr code and call pdf for post process
     :param input_pdf: PDF byte content
@@ -58,8 +58,9 @@ def generate_qrcode(input_pdf, qr_data, qr_x=545, qr_y=20, version=None, scale=1
     :param version: set QR code density
     :param scale: scale final image
     :param quiet_zone: set QR code corner
+    :param error: sets the error correction level of the code
     """
-    qr = pyqrcode.create(qr_data, version=version, error='Q')
+    qr = pyqrcode.create(qr_data, version=version, error=error)
 
     svg = BytesIO()
     qr.svg(svg, quiet_zone=quiet_zone)
@@ -113,23 +114,29 @@ def render_pdf_from_html():
         if bottle.request.forms.scale:
             scale = int(bottle.request.forms.scale)
 
-        is_qr = True
-        if bottle.request.forms.is_qr:
-            if int(bottle.request.forms.is_qr) == 0:
-                is_qr = False
+        code_type = "qrcode"
+        if bottle.request.forms.code_type:
+            if bottle.request.forms.code_type == "datamatrix":
+                code_type = bottle.request.forms.code_type
 
-        if is_qr:
+        if code_type == "qrcode":
             version = None
             if bottle.request.forms.version:
                 version = int(bottle.request.forms.version)
             quiet_zone = 4
             if bottle.request.forms.quiet_zone:
                 quiet_zone = int(bottle.request.forms.quiet_zone)
-        else:
+            error = 'Q'
+            if bottle.request.forms.error:
+                if bottle.request.forms.error in ['H', 'Q', 'M', 'L']:
+                    error = bottle.request.forms.error
+                else:
+                    error = 'H'
+        elif code_type == "datamatrix":
             rectangular = False
             if bottle.request.forms.rectangular:
-                if int(bottle.request.forms.is_qr) != 0:
-                    is_qr = True
+                if int(bottle.request.forms.rectangular) != 0:
+                    rectangular = True
     except ValueError:
         return bottle.HTTPResponse(
             status=400,
@@ -146,9 +153,9 @@ def render_pdf_from_html():
 
     if code is not None:
         try:
-            if is_qr:
-                pdf_file = generate_qrcode(pdf_file, code, qr_x, qr_y, version, scale, quiet_zone)
-            else:
+            if code_type == "qrcode":
+                pdf_file = generate_qrcode(pdf_file, code, qr_x, qr_y, version, scale, quiet_zone, error)
+            elif code_type == "datamatrix":
                 pdf_file = generate_datamatrix(pdf_file, code, qr_x, qr_y, scale, rectangular)
         except ValueError:
             logger.error('Failed to append QR code', exc_info=True)
