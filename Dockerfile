@@ -1,8 +1,8 @@
 # vim: set syntax=dockerfile:
 
-FROM python:3.7
+FROM python:3.13
 
-LABEL maintainer "VNET a.s. <db@vnet.sk>"
+LABEL maintainer="VNET a.s. <db@vnet.eu>"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
@@ -22,7 +22,7 @@ RUN pip install -r /tmp/requirements.txt
 COPY ./besserberg /opt/besserberg
 WORKDIR /opt/besserberg
 
-ENV PYTHONPATH /opt:$PYTHONPATH
+ENV PYTHONPATH=/opt:$PYTHONPATH
 
 EXPOSE 8000
 
