@@ -9,11 +9,10 @@ import os
 # 3p
 from ppf.datamatrix.datamatrix import DataMatrix
 from PyPDF2 import PdfFileReader, PdfFileWriter
-from raven import Client
-from raven.contrib.bottle import Sentry
 from cairosvg import svg2pdf
 import bottle
 import pyqrcode
+import sentry_sdk
 
 # project
 from besserberg.backends import backends_registry
@@ -27,8 +26,9 @@ logger = logging.getLogger(__name__)
 app = application = bottle.default_app()
 app.catchall = False
 # initialize sentry and use one as wrapper for bottle application
-sentry_client = Client(os.environ.get('SENTRY_DSN'), auto_log_stacks=True)
-app = Sentry(app, sentry_client)
+sentry_sdk.init(
+    os.environ.get('SENTRY_DSN'),
+)
 
 
 def generate_datamatrix(input_pdf, dm_data, dm_x=545, dm_y=20, scale=1, rectangular=False):
