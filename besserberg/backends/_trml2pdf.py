@@ -17,6 +17,10 @@ class Trml2PdfBackend(BesserbergBackend):
         ('DejaVuSans-Bold', 'DejaVuSans-Bold.ttf'),
         ('DejaVuSans-Italic', 'DejaVuSans-Oblique.ttf'),
         ('DejaVuSans-BoldItalic', 'DejaVuSans-BoldOblique.ttf'),
+        ('DejaVuSansCondensed', 'DejaVuSansCondensed.ttf'),
+        ('DejaVuSansCondensed-Bold', 'DejaVuSansCondensed-Bold.ttf'),
+        ('DejaVuSansCondensed-Italic', 'DejaVuSansCondensed-Oblique.ttf'),
+        ('DejaVuSansCondensed-BoldItalic', 'DejaVuSansCondensed-BoldOblique.ttf'),
     )
 
     RML_FONT_FAMILIES = {
@@ -25,6 +29,12 @@ class Trml2PdfBackend(BesserbergBackend):
             'bold': 'DejaVuSans-Bold',
             'italic': 'DejaVuSans-Italic',
             'boldItalic': 'DejaVuSans-BoldItalic',
+        },
+        'DejaVuSansCondensed': {
+            'normal': 'DejaVuSansCondensed',
+            'bold': 'DejaVuSansCondensed-Bold',
+            'italic': 'DejaVuSansCondensed-Italic',
+            'boldItalic': 'DejaVuSansCondensed-BoldItalic',
         }
     }
 
