@@ -23,7 +23,7 @@ dependencies = [
     "gunicorn==23.0.0",
     "pdfkit==0.6.1",
     "ppf-datamatrix==0.2",
-    "pypdf2==1.26.0",
+    "pypdf>=6.0.0",
     "pyqrcode==1.2.1",
     "sentry-sdk[bottle]==2.20.0",
     "trml2pdf==0.6.0",

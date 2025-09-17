@@ -8,7 +8,7 @@ import os
 
 # 3p
 from ppf.datamatrix.datamatrix import DataMatrix
-from PyPDF2 import PdfFileReader, PdfFileWriter
+from pypdf import PdfReader, PdfWriter
 from cairosvg import svg2pdf
 import bottle
 import pyqrcode
@@ -82,14 +82,14 @@ def postprocess_pdf(input_pdf, svg, x=545, y=20, scale=1):
     svg2pdf(bytestring=svg.read(), write_to=svg_pdf, background_color="white", scale=scale)
     svg_pdf.seek(0)
 
-    qr_page = PdfFileReader(svg_pdf).getPage(0)
+    qr_page = PdfReader(svg_pdf).pages[0]
 
-    output_writer = PdfFileWriter()
+    output_writer = PdfWriter()
     output_pdf = BytesIO()
 
-    for page in PdfFileReader(BytesIO(input_pdf)).pages:
-        page.mergeTranslatedPage(qr_page, x, y)
-        output_writer.addPage(page)
+    for page in PdfReader(BytesIO(input_pdf)).pages:
+        page.merge_translated_page(qr_page, x, y)
+        output_writer.add_page(page)
 
     output_writer.write(output_pdf)
     output_pdf.seek(0)
