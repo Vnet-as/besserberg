@@ -1,6 +1,22 @@
 # vim: set syntax=dockerfile:
+FROM python:3.13-slim-bookworm as builder
 
-FROM python:3.13
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+WORKDIR /opt/besserberg
+
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --no-install-project --no-editable --no-managed-python
+
+ADD . /opt/besserberg
+
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --no-editable --no-managed-python
+
+FROM python:3.13-slim-bookworm
 
 LABEL maintainer="VNET a.s. <db@vnet.eu>"
 
@@ -14,15 +30,15 @@ RUN apt-get update \
     ghostscript \
     fonts-dejavu \
     libssl-dev \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+ && apt-get clean
 
-COPY ./requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
-
-COPY ./besserberg /opt/besserberg
+RUN useradd -ms /bin/bash besserberg
+USER besserberg
 WORKDIR /opt/besserberg
+ENV PATH=$PATH:/opt/besserberg/.venv/bin
 
-ENV PYTHONPATH=/opt:$PYTHONPATH
+COPY --from=builder --chown=besserberg:besserberg /opt/besserberg/.venv /opt/besserberg/.venv
 
 EXPOSE 8000
 

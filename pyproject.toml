@@ -1,0 +1,44 @@
+[project]
+name = "besserberg"
+version = "1.2.0"
+authors = [
+    {name = "VNET a.s.", email = "db@vnet.eu"}
+]
+description = "Microservice for converting HTML files to PDF"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+classifiers = [
+    "Development Status :: Alpha",
+    "Environment :: Web",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+]
+keywords = ["pdf", "web", "rest"]
+dependencies = [
+    "bottle==0.13.2",
+    "cairosvg==2.7.1",
+    "gunicorn==23.0.0",
+    "pdfkit==0.6.1",
+    "ppf-datamatrix==0.2",
+    "pypdf2==1.26.0",
+    "pyqrcode==1.2.1",
+    "sentry-sdk[bottle]==2.20.0",
+    "trml2pdf==0.6.0",
+]
+
+[project.urls]
+Repository = "https://github.com/Vnet-as/besserberg"
+
+[project.scripts]
+besserberg = "besserberg.app:main"
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "besserberg"
+module-root = ""

@@ -79,3 +79,5 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+uv.lock
